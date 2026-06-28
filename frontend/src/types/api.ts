@@ -32,6 +32,7 @@ export interface AnalysisDetail extends AnalysisStatus {
   } | null
   evidence: Record<string, unknown> | null
   inference_result: InferenceResult | null
+  ai_explanation: AIExplanation | null
 }
 
 export interface ClusterSummary {
@@ -58,6 +59,13 @@ export interface InferenceResult {
   severity: string
   explanation: string
   suggested_fixes: string[]
+}
+
+export interface AIExplanation {
+  ai_summary: string
+  ai_fixes: string[]
+  ai_confidence_note: string
+  model_used: string
 }
 
 export interface Report {

@@ -1,4 +1,3 @@
-# Placeholder — implemented in Phase 1
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -21,7 +20,6 @@ router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 
 async def _run_analysis_task(upload_id: str, user_id: str, file_path: str) -> None:
-    """Background task — runs pipeline and persists results."""
     async with AsyncSessionLocal() as db:
         try:
             result = await db.execute(select(Analysis).where(Analysis.upload_id == upload_id))
@@ -40,6 +38,7 @@ async def _run_analysis_task(upload_id: str, user_id: str, file_path: str) -> No
             analysis.anomalies = pipeline_output.get("anomalies")
             analysis.evidence = pipeline_output.get("evidence")
             analysis.inference_result = pipeline_output.get("inference")
+            analysis.ai_explanation = pipeline_output.get("ai_explanation")
             analysis.completed_at = datetime.now(timezone.utc)
 
             if pipeline_output.get("error"):
@@ -60,7 +59,6 @@ async def _run_analysis_task(upload_id: str, user_id: str, file_path: str) -> No
                 )
                 db.add(report)
 
-            # Update upload status
             upload_res = await db.execute(select(Upload).where(Upload.id == upload_id))
             upload = upload_res.scalar_one_or_none()
             if upload:
@@ -89,7 +87,6 @@ async def start_analysis(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> Analysis:
-    # Verify upload belongs to user
     upload_res = await db.execute(
         select(Upload).where(Upload.id == upload_id, Upload.user_id == current_user.id)
     )
@@ -97,7 +94,6 @@ async def start_analysis(
     if not upload:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Upload not found")
 
-    # Prevent duplicate analysis
     existing = await db.execute(select(Analysis).where(Analysis.upload_id == upload_id))
     if existing.scalar_one_or_none():
         raise HTTPException(
@@ -139,3 +135,21 @@ async def get_analysis(
     if not analysis:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Analysis not found")
     return analysis
+
+
+@router.delete("/{upload_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_analysis(
+    upload_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> None:
+    result = await db.execute(
+        select(Analysis).where(
+            Analysis.upload_id == upload_id,
+            Analysis.user_id == current_user.id,
+        )
+    )
+    analysis = result.scalar_one_or_none()
+    if not analysis:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Analysis not found")
+    await db.delete(analysis)

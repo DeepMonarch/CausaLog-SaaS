@@ -1,4 +1,3 @@
-# Schema — implemented in Phase 1
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from datetime import datetime
@@ -46,6 +45,7 @@ class AnalysisDetailResponse(BaseModel):
     anomalies: Optional[Dict[str, Any]] = None
     evidence: Optional[Dict[str, Any]] = None
     inference_result: Optional[Dict[str, Any]] = None
+    ai_explanation: Optional[Dict[str, Any]] = None
     created_at: datetime
     completed_at: Optional[datetime] = None
 

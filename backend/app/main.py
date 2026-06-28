@@ -3,10 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import auth, users, upload, analysis, reports, history
 from app.config.settings import settings
-
-
 from app.config.database import engine, Base
-import app.models  # noqa: F401 — registers all models with Baseexit
+import app.models  # noqa: F401 — registers all models with Base
 
 app = FastAPI(
     title="Causalog API",

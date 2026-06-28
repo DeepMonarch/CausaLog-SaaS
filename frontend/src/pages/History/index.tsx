@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { historyService } from '../../services/api.service'
-import type { HistoryItem } from '../../types/api'
-import { SeverityBadge } from '../../components/ui/SeverityBadge'
-import { StatusDot } from '../../components/ui/StatusDot'
-
+import { historyService } from '@/services/api.service'
+import type { HistoryItem } from '@/types/api'
+import { SeverityBadge } from '@/components/ui/SeverityBadge'
+import { StatusDot } from '@/components/ui/StatusDot'
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`

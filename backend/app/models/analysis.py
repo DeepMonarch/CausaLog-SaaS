@@ -1,8 +1,7 @@
-# Model — implemented in Phase 1
 import uuid
 from datetime import datetime
 
-from sqlalchemy import String, DateTime, Float, ForeignKey, func
+from sqlalchemy import String, DateTime, ForeignKey, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -22,13 +21,13 @@ class Analysis(Base):
     status: Mapped[str] = mapped_column(String(50), default="running")
     # running | completed | failed
 
-    # Pipeline outputs stored as JSONB — queryable, no re-running needed
     preprocessing_result: Mapped[dict] = mapped_column(JSONB, nullable=True)
     keywords: Mapped[dict] = mapped_column(JSONB, nullable=True)
     clusters: Mapped[dict] = mapped_column(JSONB, nullable=True)
     anomalies: Mapped[dict] = mapped_column(JSONB, nullable=True)
     evidence: Mapped[dict] = mapped_column(JSONB, nullable=True)
     inference_result: Mapped[dict] = mapped_column(JSONB, nullable=True)
+    ai_explanation: Mapped[dict] = mapped_column(JSONB, nullable=True)
 
     error_message: Mapped[str] = mapped_column(String(1000), nullable=True)
     created_at: Mapped[datetime] = mapped_column(

@@ -8,6 +8,7 @@ from app.services.anomaly_detection import isolation_forest
 from app.services.evidence import aggregator
 from app.services.inference import inference_engine
 from app.services.reports import report_generator
+from app.services.ai_assistant.explainer import explain_report
 
 logger = get_logger(__name__)
 
@@ -26,6 +27,7 @@ def run_pipeline(raw_log_content: str) -> Dict[str, Any]:
         "anomalies": None,
         "evidence": None,
         "inference": None,
+        "ai_explanation": None,
         "report": None,
         "error": None,
     }
@@ -41,8 +43,10 @@ def run_pipeline(raw_log_content: str) -> Dict[str, Any]:
 
         logger.info("Pipeline: TF-IDF")
         tfidf_out = tfidf.run(prep.records)
-        result["tfidf"] = {"feature_names": tfidf_out["feature_names"], "vocabulary_size": len(tfidf_out["vocabulary"])}
-        # Keep vectors separate — too large to store in result dict directly
+        result["tfidf"] = {
+            "feature_names": tfidf_out["feature_names"],
+            "vocabulary_size": len(tfidf_out["vocabulary"]),
+        }
 
         logger.info("Pipeline: clustering")
         cluster_out = kmeans.run(prep.records, tfidf_out)
@@ -59,6 +63,10 @@ def run_pipeline(raw_log_content: str) -> Dict[str, Any]:
         logger.info("Pipeline: inference")
         inference = inference_engine.run(evidence)
         result["inference"] = inference
+
+        logger.info("Pipeline: AI assistant explanation")
+        ai_explanation = explain_report(inference, evidence, prep.to_dict())
+        result["ai_explanation"] = ai_explanation
 
         logger.info("Pipeline: report generation")
         report = report_generator.run(inference, evidence, prep.to_dict())

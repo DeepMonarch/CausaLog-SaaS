@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { reportService } from '../../services/api.service'
-import type { Report } from '../../types/api'
-import { SeverityBadge } from '../../components/ui/SeverityBadge'
-import { ConfidenceBar } from '../../components/ui/ConfidenceBar'
+import { reportService } from '@/services/api.service'
+import type { Report } from '@/types/api'
+import { SeverityBadge } from '@/components/ui/SeverityBadge'
+import { ConfidenceBar } from '@/components/ui/ConfidenceBar'
 
 export default function ReportsPage() {
   const [reports, setReports] = useState<Report[]>([])
