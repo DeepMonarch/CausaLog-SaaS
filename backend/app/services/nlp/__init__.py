@@ -1,0 +1,1 @@
+from app.services.nlp.keyword_extraction import extract_keywords

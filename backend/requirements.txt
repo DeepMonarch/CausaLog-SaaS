@@ -1,0 +1,25 @@
+# Web framework
+fastapi==0.109.1
+uvicorn[standard]==0.27.0
+
+# Database
+sqlalchemy==2.0.25
+asyncpg==0.29.0
+alembic==1.13.1
+
+# Auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Config
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# ML pipeline (Phase 1)
+spacy==3.7.2
+scikit-learn==1.4.0
+numpy==1.26.3
+
+# HTTP client (for future LLM integration)
+httpx==0.26.0

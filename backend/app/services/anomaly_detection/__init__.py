@@ -1,0 +1,1 @@
+from app.services.anomaly_detection.isolation_forest import run

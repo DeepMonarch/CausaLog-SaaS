@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #0a0e1a;
+    color: #e8eaf0;
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: rgba(0, 212, 255, 0.2);
+    color: #e8eaf0;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f1526;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1e2840;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3555;
+  }
+}
+
+@layer components {
+  /* Auth input base */
+  .input-auth {
+    @apply w-full bg-bg-elevated border border-bg-border rounded-lg px-4 py-3
+           text-text-primary placeholder-text-muted font-mono text-sm
+           transition-all duration-200 outline-none;
+  }
+
+  .input-auth:focus {
+    @apply border-accent-cyan;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
+  }
+
+  .input-auth:hover:not(:focus) {
+    @apply border-opacity-80;
+    border-color: #2a3555;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply w-full bg-accent-cyan text-bg-base font-semibold text-sm py-3 px-6
+           rounded-lg transition-all duration-200 relative overflow-hidden
+           tracking-wide;
+  }
+
+  .btn-primary:hover {
+    @apply brightness-110;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.25);
+  }
+
+  .btn-primary:active {
+    @apply scale-[0.99];
+  }
+
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply text-accent-cyan text-sm font-medium transition-colors duration-150
+           hover:text-white underline-offset-4;
+  }
+
+  /* Auth card */
+  .auth-card {
+    @apply rounded-2xl border border-bg-border p-8;
+    background: #0f1526;
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.06), 0 24px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Label */
+  .input-label {
+    @apply block text-xs font-medium text-text-secondary uppercase tracking-widest mb-2;
+    letter-spacing: 0.08em;
+  }
+
+  /* Error message */
+  .input-error {
+    @apply text-severity-high text-xs mt-1.5 font-mono;
+  }
+
+  /* Divider with text */
+  .divider-text {
+    @apply flex items-center gap-3 text-text-muted text-xs font-mono;
+  }
+
+  .divider-text::before,
+  .divider-text::after {
+    content: '';
+    @apply flex-1 border-t border-bg-border;
+  }
+}
+
+@layer utilities {
+  /* Subtle grid background */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Glow dot for decorative elements */
+  .glow-dot {
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  /* Animated gradient border on focus */
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(167,139,250,0.3));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .gradient-border:focus-within::before {
+    opacity: 1;
+  }
+}
