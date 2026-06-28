@@ -73,7 +73,6 @@ App available at: `http://localhost:5173`
 See `docs/ROADMAP.md` for full detail.
 
 
-# for me:
 
 # Frontend
 cd causalog/frontend
